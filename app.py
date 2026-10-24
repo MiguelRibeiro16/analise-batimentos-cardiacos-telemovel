@@ -93,8 +93,8 @@ with st.container():
     <div class="instruction-box">
         <h4 style="margin-top:0; color:#1e293b; font-weight:600;">📋 Instruções para Gravação Externa do Vídeo</h4>
         <ol style="margin-bottom:0; color:#475569; line-height: 1.6;">
-            <li><b>Ative a lanterna (flash)</b> do telemóvel antes de iniciar a gravação na câmara nativa.</li>
-            <li><b>Cubra hermeticamente a câmara e o flash</b> com a ponta do dedo, evitando entradas de luz ambiente.</li>
+            <li><b>Ative o flash</b> do telemóvel antes de iniciar a gravação na câmara.</li>
+            <li><b>Cubra  a câmara e o flash</b> com a ponta do dedo, evitando entradas de luz ambiente.</li>
             <li><b>Exerça uma pressão suave e constante</b> (evite apertar demasiado para não cortar a perfusão sanguínea).</li>
             <li><b>Mantenha o dedo completamente estável</b> durante um intervalo de <b>10 a 30 segundos</b>.</li>
             <li><b>Transfira o ficheiro</b> e carregue-o na aplicação abaixo.</li>

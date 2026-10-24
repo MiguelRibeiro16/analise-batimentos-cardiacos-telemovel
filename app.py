@@ -83,7 +83,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- HEADER SECTION ---
-st.title("❤️ Análise PPG — Frequência Cardíaca (BPM)")
+st.title("Análise PPG — Frequência Cardíaca (BPM)")
 st.markdown("##### **Projeto de Sinais e Sistemas** | Processamento Avançado de Sinal de Fotopletismografia")
 st.markdown("---")
 
@@ -91,13 +91,14 @@ st.markdown("---")
 with st.container():
     st.markdown("""
     <div class="instruction-box">
-        <h4 style="margin-top:0; color:#1e293b; font-weight:600;">📋 Instruções para Gravação Externa do Vídeo</h4>
+        <h4 style="margin-top:0; color:#1e293b; font-weight:600;">📋 Instruções para Gravação  do Vídeo</h4>
         <ol style="margin-bottom:0; color:#475569; line-height: 1.6;">
             <li><b>Ative o flash</b> do telemóvel antes de iniciar a gravação na câmara.</li>
-            <li><b>Cubra  a câmara e o flash</b> com a ponta do dedo, evitando entradas de luz ambiente.</li>
-            <li><b>Exerça uma pressão suave e constante</b> (evite apertar demasiado para não cortar a perfusão sanguínea).</li>
-            <li><b>Mantenha o dedo completamente estável</b> durante um intervalo de <b>10 a 30 segundos</b>.</li>
+            <li><b>Cubra totalmente a câmara com a ponta do dedo e o  flash </b> , evitando entradas de luz ambiente.</li>
+            <li><b>Exerça uma pressão suave e constante</b> (evite apertar demasiado para não cortar a circulação sanguínea).</li>
+            <li><b>Mantenha o dedo completamente estável</b> durante um intervalo de <b> 30 segundos</b>.</li>
             <li><b>Transfira o ficheiro</b> e carregue-o na aplicação abaixo.</li>
+            st.link_button("Clica aqui para saber mais", "https://www.youtube.com/watch?v=Aq5WXmQQooo")
         </ol>
     </div>
     """, unsafe_allow_html=True)
@@ -323,5 +324,3 @@ if len(videos_para_processar) > 0:
         st.subheader("📋 Resumo Detalhado por Ensaio")
         for res in resultados:
             st.markdown(f"• **{res['nome']}** &nbsp;|&nbsp; Categoria: `{res['categoria']}` &nbsp;|&nbsp; Média: **{res['bpm_medio']:.1f} BPM** &nbsp;|&nbsp; *FPS utilizado:* {res['fs_lido']:.1f}")
-else:
-    st.info("👆 Carregue ficheiros de vídeo (.mp4, .mov, .avi) acima para iniciar a análise visual e numérica.")

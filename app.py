@@ -41,7 +41,7 @@ with st.container():
     st.subheader("Instrucoes para Gravacao do Video")
     st.markdown("""
     Para assegurar a fidelidade do sinal PPG e minimizar ruido por interferencia externa:
-    1. **Ative a lanterna (flash)** do telemovel antes de iniciar a gravacao.
+    1. **Ative a lanterna (flash)** do telemovel antes de iniciar a gravacao (se gravar com a camara traseira e flash).
     2. **Cubra hermeticamente a camara e o flash** com a ponta do dedo, evitando folgas de luz ambiente.
     3. **Exerca uma pressao suave e constante**, evitando apertar excessivamente (o que restringe a perfusao sanguinea).
     4. **Mantenha o dedo completamente estavel** durante um intervalo de 10 a 30 segundos.
@@ -52,9 +52,6 @@ st.markdown("---")
 st.sidebar.subheader("Configuracoes de Leitura")
 forcar_fps_manual = st.sidebar.checkbox("Forcar FPS manual", value=False)
 fps_manual = st.sidebar.number_input("Valor de FPS", value=30.0, step=0.1)
-
-st.subheader("Carregamento de Ensaios")
-uploaded_files = st.file_uploader("Selecione os ficheiros de video (.mp4, .mov, .avi)", type=["mp4", "mov", "avi"], accept_multiple_files=True)
 
 def extrair_sinal_ppg_path(caminho_video, forcar_manual, valor_manual):
     cap = cv2.VideoCapture(caminho_video)
@@ -157,14 +154,44 @@ def processar_ppg_com_toolbox(sinal_bruto, Fs):
 
     return bpm, np.array(t_bpm), np.array(bpms_hist)
 
-if uploaded_files:
-    if st.button("Processar Ensaios"):
+# Criacao de Abas para Escolher entre Upload ou Gravacao Direta
+aba_upload, aba_gravacao = st.tabs(["📂 Carregar Ficheiros", "🎥 Gravar Vídeo (Webcam/Telemóvel)"])
+
+videos_para_processar = [] # Lista de tuplos: (nome_ficheiro, caminho_temporario_ou_bytes)
+
+with aba_upload:
+    st.subheader("Carregamento de Ensaios Existentes")
+    uploaded_files = st.file_uploader("Selecione os ficheiros de video (.mp4, .mov, .avi)", type=["mp4", "mov", "avi"], accept_multiple_files=True, key="uploader_ficheiros")
+    if uploaded_files:
+        for f in uploaded_files:
+            videos_para_processar.append({"origem": f, "nome": f.name})
+
+with aba_gravacao:
+    st.subheader("Gravação Direta de Vídeo")
+    st.markdown("Pode gravar um vídeo diretamente utilizando a câmara do seu dispositivo (computador ou telemóvel).")
+    
+    # Widget nativo do Streamlit para capturar vídeo da câmara
+    video_gravado = st.camera_input("Grave o seu ensaio PPG (cubra a câmara com o dedo e ligue o flash se disponível)")
+    
+    nome_gravado = st.text_input("Nome/Identificação para este ensaio gravado:", value="Ensaio_Repouso_1")
+    
+    if video_gravado is not None:
+        videos_para_processar.append({"origem": video_gravado, "nome": f"{nome_gravado}.mp4"})
+        st.success(p_msg := f"Vídeo '{nome_gravado}' capturado com sucesso e pronto para processamento!")
+
+st.markdown("---")
+
+if len(videos_para_processar) > 0:
+    if st.button("Processar Ensaios Selecionados/Gravados"):
         resultados = []
         
         with st.spinner("A processar os videos com o algoritmo sincronizado..."):
-            for file in uploaded_files:
+            for item in videos_para_processar:
+                file_obj = item["origem"]
+                file_name = item["nome"]
+                
                 tfile = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
-                tfile.write(file.read())
+                tfile.write(file_obj.read())
                 tfile.close()
                 
                 tempo, sinal_bruto, Fs_utilizado = extrair_sinal_ppg_path(tfile.name, forcar_fps_manual, fps_manual)
@@ -172,7 +199,7 @@ if uploaded_files:
                 
                 os.unlink(tfile.name)
                 
-                nome_lower = file.name.lower()
+                nome_lower = file_name.lower()
                 if "repouso" in nome_lower or "rep" in nome_lower:
                     categoria = "Repouso"
                 elif "exercicio" in nome_lower or "exe" in nome_lower or "pos" in nome_lower:
@@ -181,7 +208,7 @@ if uploaded_files:
                     categoria = "Geral"
 
                 resultados.append({
-                    "nome": file.name,
+                    "nome": file_name,
                     "categoria": categoria,
                     "bpm_medio": bpm,
                     "fs_lido": Fs_utilizado,
@@ -226,11 +253,10 @@ if uploaded_files:
         ax.legend(loc='best', fontsize=9)
         plt.tight_layout()
         
-        # use_container_width=True garante que o grafico se ajusta a ecras de telemoveis
         st.pyplot(fig, use_container_width=True)
 
         st.subheader("Resumo Detalhado por Ensaio")
         for res in resultados:
             st.write(f"- **{res['nome']}** [{res['categoria']}]: **{res['bpm_medio']:.1f} BPM** (FPS utilizado: {res['fs_lido']:.1f})")
 else:
-    st.info("Carregue um ou mais videos para iniciar a analise.")
+    st.info("Carregue ficheiros de vídeo ou grave um novo vídeo na aba ao lado para iniciar a análise.")

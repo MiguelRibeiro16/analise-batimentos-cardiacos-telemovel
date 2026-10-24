@@ -206,7 +206,7 @@ if uploaded_files:
                 st.markdown(f"""
                 <div class="metric-card">
                     <h4 style="margin:0; color:#1f3b57;">Condicao: {cat}</h4>
-                    <p style="margin:5px 0 0 0; font-size:22px; font-weight:bold;">{media_cat:.1f} BPM</p>
+                    <p style="margin:5px 0 0 0;color:#1f3b57; font-size:22px; font-weight:bold;">{media_cat:.1f} BPM</p>
                     <p style="margin:0; color:#666; font-size:12px;">Desvio Padrao: ±{std_cat:.1f} | Ensaios: {len(ensaios_cat)}</p>
                 </div>
                 """, unsafe_allow_html=True)

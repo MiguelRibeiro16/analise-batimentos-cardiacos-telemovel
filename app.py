@@ -91,17 +91,19 @@ st.markdown("---")
 with st.container():
     st.markdown("""
     <div class="instruction-box">
-        <h4 style="margin-top:0; color:#1e293b; font-weight:600;">📋 Instruções para Gravação  do Vídeo</h4>
+        <h4 style="margin-top:0; color:#1e293b; font-weight:600;">Instrucoes para Gravacao do Video</h4>
         <ol style="margin-bottom:0; color:#475569; line-height: 1.6;">
-            <li><b>Ative o flash</b> do telemóvel antes de iniciar a gravação na câmara.</li>
-            <li><b>Cubra totalmente a câmara com a ponta do dedo e o  flash </b> , evitando entradas de luz ambiente.</li>
-            <li><b>Exerça uma pressão suave e constante</b> (evite apertar demasiado para não cortar a circulação sanguínea).</li>
-            <li><b>Mantenha o dedo completamente estável</b> durante um intervalo de <b> 30 segundos</b>.</li>
-            <li><b>Transfira o ficheiro</b> e carregue-o na aplicação abaixo.</li>
-            st.link_button("Clica aqui para saber mais", "https://www.youtube.com/watch?v=Aq5WXmQQooo")
+            <li><b>Ative o flash</b> do telemovel antes de iniciar a gravacao na camara.</li>
+            <li><b>Cubra totalmente a camara com a ponta do dedo e o flash</b>, evitando entradas de luz ambiente.</li>
+            <li><b>Exerça uma pressao suave e constante</b> (evite apertar demasiado para nao cortar a circulacao sanguinea).</li>
+            <li><b>Mantenha o dedo completamente estavel</b> durante um intervalo de <b>30 segundos</b>.</li>
+            <li><b>Transfira o ficheiro</b> e carregue-o na aplicacao abaixo.</li>
         </ol>
     </div>
     """, unsafe_allow_html=True)
+
+    # O botão fica aqui fora, logo a seguir à caixa de instruções
+    st.link_button("Clica aqui para saber mais", "https://www.youtube.com/watch?v=Aq5WXmQQooo")
 
 # --- SIDEBAR CONFIGURATIONS ---
 st.sidebar.subheader("⚙️ Configurações")
